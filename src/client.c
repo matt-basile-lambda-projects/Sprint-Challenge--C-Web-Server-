@@ -53,11 +53,9 @@ urlinfo_t *parse_url(char *url)
       printf("Our port is [%s]\n", port);
     // 6. Overwrite the colon with a '\0' so that we are just left with the hostname.
       *colon ='\0';
-
-  ///////////////////
-  // IMPLEMENT ME! //
-  ///////////////////
-
+      urlinfo->port = port;
+      urlinfo->path = path;
+      urlinfo->hostname = hostname;
   return urlinfo;
 }
 
@@ -76,11 +74,15 @@ int send_request(int fd, char *hostname, char *port, char *path)
   const int max_request_size = 16384;
   char request[max_request_size];
   int rv;
-
-  ///////////////////
-  // IMPLEMENT ME! //
-  ///////////////////
-
+  int request_length = sprintf(request, "%s\n"
+      "GET /%s HTTP/1.1 \n"
+      "Host: %s:%s ]n"
+      "Connection: close\n",
+      path,
+      hostname,
+      port
+  );
+  rv = send(fd, request, request_length, 0);
   return 0;
 }
 
@@ -93,14 +95,17 @@ int main(int argc, char *argv[])
     fprintf(stderr,"usage: client HOSTNAME:PORT/PATH\n");
     exit(1);
   }
-  parse_url(argv[1]);
-  /*
-    1. Parse the input URL
-    2. Initialize a socket by calling the `get_socket` function from lib.c
-    3. Call `send_request` to construct the request and send it
-    4. Call `recv` in a loop until there is no more data to receive from the server. Print the received response to stdout.
-    5. Clean up any allocated memory and open file descriptors.
-  */
+  // send_request(1, 'localhost', 4903, '/index.html');
+  // 
+  
+    // 1. Parse the input URL
+    parse_url(argv[1]);
+    // 2. Initialize a socket by calling the `get_socket` function from lib.c
+    // get_socket
+    // 3. Call `send_request` to construct the request and send it
+    // 4. Call `recv` in a loop until there is no more data to receive from the server. Print the received response to stdout.
+    // 5. Clean up any allocated memory and open file descriptors.
+
 
   ///////////////////
   // IMPLEMENT ME! //
