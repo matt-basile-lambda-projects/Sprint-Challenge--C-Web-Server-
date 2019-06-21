@@ -33,10 +33,9 @@ urlinfo_t *parse_url(char *url)
   char *path;
 
   urlinfo_t *urlinfo = malloc(sizeof(urlinfo_t));
-
     // We can parse the input URL by doing the following:
     // 1. Use strchr to find the first slash in the URL (this is assuming there is no http:// or https:// in the URL).
-      char *slash = strchr(hostname, '/');
+      char *slash = strstr(url, "/");
       if (slash!=NULL){
         // printf("String after |/| is - |%s|\n",  slash);
         // 2. Set the path pointer to 1 character after the spot returned by strchr.
@@ -46,11 +45,11 @@ urlinfo_t *parse_url(char *url)
         *slash = '\0';
       }
       else{
-        urlinfo->path=" ";
+        urlinfo->path="";
       }
       // printf("Our hostname is [%s]\n", hostname);
     // 4. Use strchr to find the first colon in the URL.
-      char *colon = strchr(hostname, ':');
+      char *colon = strstr(url, ":");
       // printf("String after |:| is - |%s|\n",  colon);
       if(colon != NULL){
         // 5. Set the port pointer to 1 character after the spot returned by strchr.
